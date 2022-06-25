@@ -38,12 +38,7 @@ def upload_image(file):
     return response
 
 def get_response(file):
-    # data = dotenv_values(".env")
-    # excited = os.environ['EXCITED']
-    # url = data.get("a")
-    print("here")
     url = os.environ['a']
-    print("urlll",url)
     payload = {os.environ['c']: os.environ['b']}
     file = {'file':file}
     response = requests.request("POST", url, data=payload, files=file)
