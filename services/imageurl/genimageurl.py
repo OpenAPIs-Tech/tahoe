@@ -42,6 +42,7 @@ def get_response(file):
     # excited = os.environ['EXCITED']
     # url = data.get("a")
     url = os.environ['a']
+    print("urlll",url)
     payload = {os.environ['c']: os.environ['b']}
     file = {'file':file}
     response = requests.request("POST", url, data=payload, files=file)
