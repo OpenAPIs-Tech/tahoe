@@ -1,5 +1,5 @@
 import json
-from flask import Flask, request,Response
+from flask import Flask, request,Response,render_template
 from flask_cors import CORS, cross_origin
 
 from services.imageurl import genimageurl
@@ -9,8 +9,9 @@ app = Flask(__name__)
 
 
 @app.route('/',methods=['GET'])
-def hello():
-    return "hello world"
+def index():
+    return render_template('index.html')
+
 
 @app.route('/generateUrl',methods=['POST'])
 @cross_origin()
