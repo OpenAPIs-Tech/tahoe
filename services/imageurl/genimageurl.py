@@ -1,7 +1,7 @@
 import requests
 import json
 from dotenv import load_dotenv,dotenv_values
-
+import os
 def getUrl(request):
     uploaded_file = request.files['file']
     resp={}
@@ -17,7 +17,7 @@ def getUrl(request):
         resp['url'] = ""
         resp['message'] = "Something wrong from server"
         return resp
-        
+
     resp['url'] = ""
     resp['message'] = "Wrong file input"
     return resp
@@ -38,9 +38,11 @@ def upload_image(file):
     return response
 
 def get_response(file):
-    data = dotenv_values(".env")
-    url = data.get("a")
-    payload = {data.get("c"): data.get("b")}
+    # data = dotenv_values(".env")
+    # excited = os.environ['EXCITED']
+    # url = data.get("a")
+    url = os.environ['c']
+    payload = {os.environ['c']: os.environ['b']}
     file = {'file':file}
     response = requests.request("POST", url, data=payload, files=file)
 
