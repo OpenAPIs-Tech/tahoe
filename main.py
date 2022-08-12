@@ -42,7 +42,7 @@ def urlGenerator():
 def hcVermaData(volume: int,chapter:int,exercise:int,question:int):
     statusCode=200
     msgText='Success'
-    data=questionanswer.getQuestionAnswer(volume,chapter,exercise,question)
+    data=questionanswer.getQuestionAnswer(volume,chapter,exercise,question,db)
     if data:
         return jsonify(statusCode=statusCode,msgText=msgText,data=data)
 
