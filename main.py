@@ -24,9 +24,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] =url
 # app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://nrzlppgvzcreqh:9aa9fcc9bdd35ba405654b9a30d18b71a0424344c5fa08893cbd2aedee6cfe28@ec2-34-235-198-25.compute-1.amazonaws.com:5432/dbnu9bnpvc38nj'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-@app.route('/',methods=['GET'])
-def index():
-    return "Hello world"
+# @app.route('/',methods=['GET'])
+# def index():
+#     return "Hello world"
 
 
 @app.route('/generateUrl',methods=['POST'])
@@ -44,40 +44,82 @@ def urlGenerator():
 def hcVermaData(volume: int,chapter:int,exercise:int,question:int):
     statusCode=200
     msgText='Success'
-    data=getQuestionAnswer(volume,chapter,exercise,question)
+    data=questionanswer.getQuestionAnswer(volume,chapter,exercise,question)
     if data:
         return jsonify(statusCode=statusCode,msgText=msgText,data=data)
 
 
     return jsonify(statusCode=400,msgText="We are very sorry. We are doing our best to fix this up.")
 
-def getQuestionAnswer(vol,chapter,exercise,question):
-    # result = db.session.execute(sqlalchemy.text(f'SELECT * FROM question WHERE chapter_id = {chapter} and book_id={vol} and exercise={exercise} and question_no={question}'))
-    result=db.session.execute(sqlalchemy.text(f'select q.question_no,q.question_latex,q.class_id,q.exercise,q.difficulty,q.duration,q.type_of_question,q.blooms,q.concept,q.answer,b.name,b.volume,b.author,c.chapter_id,c.chapter_name from question q left join book b on q.book_id=b.id left join chapterr c on q.chapter_id=c.chapter_id and q.book_id=c.book_id where q.book_id={vol} and q.chapter_id={chapter} and q.exercise={exercise} and q.question_no={question}'))
-    data=result.all()[0]._asdict()
-    print(f"data from postgresql db==>{data}")
-    if data:
-        getDataInDict = processData(data)
-    return getDataInDict
 
-def processData(data):
-    response={}
-    response['bookName'] = data.get('name',None)
-    response['bookPartName'] = data.get('volume',None)
-    response['authorName'] = data.get('author',None)
-    response['class'] = data.get('class_id',None)
-    response['chapterNumber']=data.get('chapter_id',None)
-    response['chapterName']=data.get("chapter_name",None)
-    response['exerciseNumber']=data.get('exercise',None)
-    response['questionNumber']=data.get('question_no',None)
-    response['questionDataInLatex']= data.get('question_latex',None)
-    response['answerOfQuestion']=data.get('answer',None)
-    response['solutionLatex'] = data.get('solution',"Will be added very soon")
-    response['duration']=data.get('duration',None)
-    response['NatureOfQuestion'] = data.get('blooms',None)
-    response['typeOfQuestion']=data.get('type_of_question',None)
-    response['conceptTagOfQuestion'] = data.get('concept',None)
-    return response
+
+
+
+
+@app.route('/',methods=['GET'])
+def index():
+    return render_template('index.html')
+
+@app.route('/contact',methods=['GET'])
+def contact():
+    return render_template('contact.html')
+
+
+
+@app.route('/error')
+def errorpage():
+    return render_template('404.html')
+
+# Services----->START
+@app.route('/Services',methods=['GET'])
+def allServices():
+    return render_template("service-signle.html")
+
+@app.route('/Services/survey',methods=['GET'])
+def survey():
+    return render_template("survey.html")
+
+@app.route('/Services/soil-testing',methods=['GET'])
+def soilTesting():
+    return render_template("soil-testing.html")
+
+@app.route('/Services/railway-bridges',methods=['GET'])
+def railwayBridges():
+    return render_template("railway-bridges.html")
+
+@app.route('/Services/buildings',methods=['GET'])
+def buildings():
+    return render_template("buildings.html")
+
+@app.route('/Services/industrial-sheds',methods=['GET'])
+def industrialSheds():
+    return render_template("industrial-sheds.html")
+
+
+#  Services------>END
+
+
+# ABOUT-->start
+@app.route('/About',methods=['GET'])
+def aboutPage():
+    return render_template("about.html")
+
+@app.route('/About-team',methods=['GET'])
+def teamPage():
+    return render_template("our-team.html")
+
+
+# @app.route('/Contact',methods=['GET'])
+# def teamPage():
+#     return render_template("contact.html")
+
+
+
+
+
+@app.route('/')
+def callback():
+    return render_template('index.html')
 if __name__=="__main__":
     app.run()
     # app.run(host='0.0.0.0', port=5000, debug=True)

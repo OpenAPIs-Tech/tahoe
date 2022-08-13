@@ -1,5 +1,7 @@
 import sqlalchemy
-def getQuestionAnswer(vol,chapter,exercise,question,db):
+from main import db
+
+def getQuestionAnswer(vol,chapter,exercise,question):
     # result = db.session.execute(sqlalchemy.text(f'SELECT * FROM question WHERE chapter_id = {chapter} and book_id={vol} and exercise={exercise} and question_no={question}'))
     result=db.session.execute(sqlalchemy.text(f'select q.question_no,q.question_latex,q.class_id,q.exercise,q.difficulty,q.duration,q.type_of_question,q.blooms,q.concept,q.answer,b.name,b.volume,b.author,c.chapter_id,c.chapter_name from question q left join book b on q.book_id=b.id left join chapterr c on q.chapter_id=c.chapter_id and q.book_id=c.book_id where q.book_id={vol} and q.chapter_id={chapter} and q.exercise={exercise} and q.question_no={question}'))
     data=result.all()[0]._asdict()
