@@ -5,12 +5,14 @@ def getQuestionAnswer(vol,chapter,exercise,question,db):
     
     try:
         result=db.session.execute(sqlalchemy.text(f'select q.question_no,q.question_latex,q.option_latex,s.solution_latex,q.class_id,q.exercise,q.difficulty,q.duration,q.type_of_question,q.blooms,q.concept,q.answer,b.name,b.volume,b.author,c.chapter_id,c.chapter_name from question q left join book b on q.book_id=b.id left join solution s on q.id=s.question_id left join chapterr c on q.chapter_id=c.chapter_id and q.book_id=c.book_id where q.book_id={vol} and q.chapter_id={chapter} and q.exercise={exercise} and q.question_no={question};'))
-        data=result.all()[0]._asdict()
-        print(f"data from postgresql db==>{data}")
+        
+        
 
     except Exception as e:
         print(f"error in fetching data from db, error: {e}")
 
+    data=result.all()[0]._asdict()
+    print(f"data from postgresql db==>{data}")
     if data:
         getDataInDict = processData(data)
         print(f"getdata in dict===>{getDataInDict}")
@@ -40,6 +42,7 @@ def getDataForInputTypeQuestion(data):
     return response
 
 def getOptionsInList(data):
+    print(f"data processing for options===> {data}")
     if not data:
         return ""
     resp={}
@@ -69,14 +72,17 @@ def getDataForOptionTypeQuestions(data):
     response['typeOfQuestion']=data.get('type_of_question',None)
     response['conceptTagOfQuestion'] = data.get('concept',None)
     print(f"response of option type qn===>{response}")
+    return response
 
 
 def processData(data):
-
+    print(data.get('type_of_question'))
     if data.get('type_of_question').startswith('I'):
+        print("Input type procesing")
         response = getDataForInputTypeQuestion(data)
 
     else:
+        print("options type processing")
         response=getDataForOptionTypeQuestions(data)
     
     return response
