@@ -13,6 +13,7 @@ def getQuestionAnswer(vol,chapter,exercise,question,db):
 
     if data:
         getDataInDict = processData(data)
+        print(f"getdata in dict===>{getDataInDict}")
         return getDataInDict
 
     return 
@@ -67,7 +68,7 @@ def getDataForOptionTypeQuestions(data):
 
 
 def processData(data):
-    if data.get('typeOfQuestion')=='INPUT':
+    if data.get('type_of_question')=='INPUT':
         response = getDataForInputTypeQuestion(data)
     else:
         response=getDataForOptionTypeQuestions(data)
