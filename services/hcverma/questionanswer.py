@@ -5,12 +5,13 @@ def getQuestionAnswer(vol,chapter,exercise,question,db):
     
     try:
         result=db.session.execute(sqlalchemy.text(f'select q.question_no,q.question_latex,q.option_latex,s.solution_latex,q.class_id,q.exercise,q.difficulty,q.duration,q.type_of_question,q.blooms,q.concept,q.answer,b.name,b.volume,b.author,c.chapter_id,c.chapter_name from question q left join book b on q.book_id=b.id left join solution s on q.id=s.question_id left join chapterr c on q.chapter_id=c.chapter_id and q.book_id=c.book_id where q.book_id={vol} and q.chapter_id={chapter} and q.exercise={exercise} and q.question_no={question};'))
+        print(f"result from database{result.all()}")
         
         
 
     except Exception as e:
         print(f"error in fetching data from db, error: {e}")
-    if result:
+    if result.all():
         data=result.all()[0]._asdict()
         print(f"data from postgresql db==>{data}")
         if data:
