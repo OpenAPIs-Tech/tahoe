@@ -10,13 +10,13 @@ def getQuestionAnswer(vol,chapter,exercise,question,db):
 
     except Exception as e:
         print(f"error in fetching data from db, error: {e}")
-
-    data=result.all()[0]._asdict()
-    print(f"data from postgresql db==>{data}")
-    if data:
-        getDataInDict = processData(data)
-        print(f"getdata in dict===>{getDataInDict}")
-        return getDataInDict
+    if result:
+        data=result.all()[0]._asdict()
+        print(f"data from postgresql db==>{data}")
+        if data:
+            getDataInDict = processData(data)
+            print(f"getdata in dict===>{getDataInDict}")
+            return getDataInDict
 
     return 
 
