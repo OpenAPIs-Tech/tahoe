@@ -20,6 +20,7 @@ def getQuestionAnswer(vol,chapter,exercise,question,db):
 
 def getDataForInputTypeQuestion(data):
     response={}
+    print(f"data==>{data}")
     response['bookName'] = data.get('name',None)
     response['bookPartName'] = data.get('volume',None)
     response['authorName'] = data.get('author',None)
@@ -35,7 +36,9 @@ def getDataForInputTypeQuestion(data):
     response['NatureOfQuestion'] = data.get('blooms',None)
     response['typeOfQuestion']=data.get('type_of_question',None)
     response['conceptTagOfQuestion'] = data.get('concept',None)
+    print(f"response ininput type of qn===>{response}")
     return response
+
 def getOptionsInList(data):
     if not data:
         return ""
@@ -65,11 +68,14 @@ def getDataForOptionTypeQuestions(data):
     response['NatureOfQuestion'] = data.get('blooms',None)
     response['typeOfQuestion']=data.get('type_of_question',None)
     response['conceptTagOfQuestion'] = data.get('concept',None)
+    print(f"response of option type qn===>{response}")
 
 
 def processData(data):
-    if data.get('type_of_question')=='INPUT':
+
+    if data.get('type_of_question').startswith('I'):
         response = getDataForInputTypeQuestion(data)
+
     else:
         response=getDataForOptionTypeQuestions(data)
     
