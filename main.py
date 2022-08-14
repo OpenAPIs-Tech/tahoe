@@ -13,11 +13,11 @@ import sqlalchemy
 from services.imageurl import genimageurl
 from services.hcverma import questionanswer
 
-url ='postgresql://nrzlppgvzcreqh:9aa9fcc9bdd35ba405654b9a30d18b71a0424344c5fa08893cbd2aedee6cfe28@ec2-34-235-198-25.compute-1.amazonaws.com:5432/dbnu9bnpvc38nj'
+# url ='postgresql://nrzlppgvzcreqh:9aa9fcc9bdd35ba405654b9a30d18b71a0424344c5fa08893cbd2aedee6cfe28@ec2-34-235-198-25.compute-1.amazonaws.com:5432/dbnu9bnpvc38nj'
 # database="dbnu9bnpvc38nj", user="nrzlppgvzcreqh", password="9aa9fcc9bdd35ba405654b9a30d18b71a0424344c5fa08893cbd2aedee6cfe28", host="ec2-34-235-198-25.compute-1.amazonaws.com", port="5432"
 app = Flask(__name__)
-# url=os.environ['DATABASE_URL']
-# url=url.replace("postgres","postgresql")
+url=os.environ['DATABASE_URL']
+url=url.replace("postgres","postgresql")
 print(url)
 app.config['SQLALCHEMY_DATABASE_URI'] =url
 
