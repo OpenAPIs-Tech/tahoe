@@ -69,10 +69,10 @@ def getDataForOptionTypeQuestions(data):
     response['Options'] = optionsData
     response['answerOfQuestion']=[d for d in data.get('answer').split(",")]
     response['solutionLatex'] = data.get('solution_latex',"Not Available")
-    response['duration']=data.get('duration',None)
-    response['NatureOfQuestion'] = data.get('blooms',None)
-    response['typeOfQuestion']=data.get('type_of_question',None)
-    response['conceptTagOfQuestion'] = data.get('concept',None)
+    # response['duration']=data.get('duration',None)
+    # response['NatureOfQuestion'] = data.get('blooms',None)
+    # response['typeOfQuestion']=data.get('type_of_question',None)
+    # response['conceptTagOfQuestion'] = data.get('concept',None)
     print(f"response of option type qn===>{response}")
     return response
 
