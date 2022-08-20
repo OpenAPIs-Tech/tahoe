@@ -47,7 +47,7 @@ def urlGenerator():
 def hcVermaData(volume: int,chapter:int,exercise:int,question:int):
     statusCode=200
     msgText='Success'
-    if (exercise==1) or (exercise==2) or (exercise==3) or (exercise==4):
+    if ((exercise==1) or (exercise==2) or (exercise==3) or (exercise==4)) and (chapter==1):
         data=questionanswer.getQuestionAnswer(volume,chapter,exercise,question,db)
         if data:
             response={}
