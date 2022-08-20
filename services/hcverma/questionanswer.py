@@ -8,10 +8,10 @@ def getQuestionAnswer(vol,chapter,exercise,question,db):
         result=result.all()
         print(f"result from database{result}")
         
-        
-
     except Exception as e:
         print(f"error in fetching data from db, error: {e}")
+
+        
     if result:
         data=result[0]._asdict()
         print(f"data from postgresql db==>{data}")
