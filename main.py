@@ -47,16 +47,17 @@ def urlGenerator():
 def hcVermaData(volume: int,chapter:int,exercise:int,question:int):
     statusCode=200
     msgText='Success'
-    data=questionanswer.getQuestionAnswer(volume,chapter,exercise,question,db)
-    if data:
-        response={}
-        response['statusCode'] = statusCode
-        response['msgText']=msgText
-        response['data']=data
-        return Response(json.dumps(response),status=200,mimetype="application/json")
+    if (exercise==1) or (exercise==2) or (exercise==3) or (exercise==4):
+        data=questionanswer.getQuestionAnswer(volume,chapter,exercise,question,db)
+        if data:
+            response={}
+            response['statusCode'] = statusCode
+            response['msgText']=msgText
+            response['data']=data
+            return Response(json.dumps(response),status=200,mimetype="application/json")
 
 
-    return Response(json.dumps({'statusCode':400,'msgText':"Please use proper end points"}),status=400,mimetype="application/json")
+    return Response(json.dumps({'statusCode':400,'msgText':"We are still developing it. Thank you for your patience"}),status=400,mimetype="application/json")
 
 @app.route('/getTestData',methods=['POST'])
 @cross_origin()
