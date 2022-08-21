@@ -14,6 +14,17 @@ def getTestData(testCode,db):
             return response
         return
     return
+def getOptionsData(data):
+    print(f"data processing for options===> {data}")
+    if not data:
+        return ""
+    resp={}
+    count=0
+    for d in data.split(":|:|:"):
+        resp[count]=d
+        count+=1
+    return resp
+
 
 def getResponseForTest(dataFromDB):
     response=[]
@@ -23,8 +34,8 @@ def getResponseForTest(dataFromDB):
         data=data._asdict()
         temp['questionLatex'] = data.get('question_latex',None)
         temp['SolutionLatex'] = data.get('solution_latex',None)
-        temp['optionLatex'] = data.get('option_latex',None)
-        temp['answer'] = data.get('answer',None)
+        temp['optionLatex'] = getOptionsData(data.get('option_latex')) 
+        temp['answer'] = [d for d in data.get('answer').split(",")]
         temp['duration'] = data.get('duration',None)
         temp['typeOfQuestion'] = data.get('type_of_question',None)
         response.append(temp)
@@ -61,8 +72,10 @@ def getQuery(testCode,db):
         data=data[0]._asdict()
         sections = getSectionData(data)
         
-        
-        questionIds = getQuestionIdfromMarksInfoDict(sections,json.loads(data.get('sectionmarksinfo')))
+        try:
+            questionIds = getQuestionIdfromMarksInfoDict(sections,json.loads(data.get('sectionmarksinfo')))
+        except Exception as e:
+            print(f'errrrrr=> {e}')
         query=(f'''select q.question_latex,q.duration,q.type_of_question,q.difficulty,q.answer,q.option_latex,s.solution_latex from question q join solution s on q.id=s.question_id where q.id in {questionIds} ''')
         print(f"query is==>{query}")
         return query
