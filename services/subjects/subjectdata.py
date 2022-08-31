@@ -9,6 +9,7 @@ def getSubjects(classId,db):
         dataFromDB = models.getDataFromDb(query,db)
         response = getResponseForSubjects(dataFromDB)
 
+
         if response:
             return response
         
@@ -18,7 +19,8 @@ def getSubjects(classId,db):
 def getResponseForSubjects(dataFromDB):
     resp = []
     for data, in dataFromDB:
-        resp.append(data)
+        resp.append(data.replace(" ",""))
+    return resp
 
 
 def getQueryForSubjectByClass(classId):
