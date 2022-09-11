@@ -17,7 +17,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
     dataFromDb = testdata.getDataFromDb(query,db)
     response={}
     response['boards']=[]
-    response['comp'] = []
+    response['competitive'] = []
 
 
     for data in dataFromDb:
@@ -25,8 +25,8 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
         if data.get('board'):
             response['boards'].append(data.get('name'))
         
-        elif data.get('course'):
-            response['comp'].append(data.get('course'))
+        elif data.get('course') and data.get('course') not in response['competitive']:
+            response['competitive'].append(data.get('course'))
 
     print(f"response:{response}")
 
