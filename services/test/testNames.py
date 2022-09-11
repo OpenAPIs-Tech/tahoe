@@ -23,7 +23,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
     for data in dataFromDb:
         data=data._asdict()
         if data.get('board'):
-            response['boards'].append(data.get('board'))
+            response['boards'].append(data.get('name'))
         
         elif data.get('course'):
             response['comp'].append(data.get('course'))
