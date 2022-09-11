@@ -42,7 +42,7 @@ def getResponseForTest(dataFromDB):
 
     return response
 
-    return
+    
 def getDataFromDb(query,db):
 
     try:

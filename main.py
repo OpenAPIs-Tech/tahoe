@@ -14,7 +14,7 @@ import sqlalchemy
 
 from services.imageurl import genimageurl
 from services.hcverma import questionanswer
-from services.test import testdata
+from services.test import testdata,testNames
 from services.subjects import subjectdata
 
 # url ='postgresql://nrzlppgvzcreqh:9aa9fcc9bdd35ba405654b9a30d18b71a0424344c5fa08893cbd2aedee6cfe28@ec2-34-235-198-25.compute-1.amazonaws.com:5432/dbnu9bnpvc38nj'
@@ -107,6 +107,35 @@ def dataOfSubjectsByClass():
         return Response(json.dumps(response),status=200,mimetype="application/json")
 
     data = subjectdata.getSubjects(classId,db)
+    if data:
+        response['statusCode'],response['msgText'],response['data']=statusCode,"Success",data
+        return Response(json.dumps(response),status=200,mimetype="application/json")
+    response['statusCode'],response['msgText'],response['data']=400,"Failed",data
+    return Response(json.dumps(response),status=400,mimetype="application/json")
+
+
+@app.route('/getTestEntity',methods=['POST'])
+@cross_origin()
+def TestNames():
+    response={}
+    statusCode=200
+    msgText=""
+    data=None
+    try:
+        reqBody = request.get_json()
+        classId = int(reqBody.get('class'))
+        board = reqBody.get('board')
+
+    except Exception as e:
+        print(f"error:{e}")
+        statusCode=400
+        msgText="bad request, failed to get body from request"
+        response['statusCode']=statusCode
+        response['msgText']=msgText
+        response['data']=data
+        return Response(json.dumps(response),status=200,mimetype="application/json")
+
+    data = testNames.getTestNames(classId,board,db)
     if data:
         response['statusCode'],response['msgText'],response['data']=statusCode,"Success",data
         return Response(json.dumps(response),status=200,mimetype="application/json")
