@@ -27,6 +27,10 @@ db = SQLAlchemy(app)
 # def index():
 #     return "Hello world"
 
+@app.route('/health',methods=['GET'])
+@cross_origin()
+def urlGenhjderator():
+    return "hello"
 
 @app.route('/generateUrl',methods=['POST'])
 @cross_origin()

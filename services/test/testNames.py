@@ -47,7 +47,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
 
 
 def getQueryForBoardSubjectsAndCompSubjects(classId,board):
-    query = (f'''select class,name,board,course from subject where class={classId} or board='{board}' or course is not null;''')
+    query = (f'''select class,name,board,course from subject where class={classId} and board='{board}';''')
     return query
 
 # def getQueryForSubjectsAvailableByBoard(classId,board,db):
