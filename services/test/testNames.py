@@ -17,18 +17,29 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
     dataFromDb = testdata.getDataFromDb(query,db)
     response={}
     response['boards']=[]
-    response['competitive'] = []
+    response['competitive'] = {}
 
-
-    for data in dataFromDb:
-        data=data._asdict()
-        # if data.get('class')==classId:
-        board,course = data.get('name'),data.get('exam_name')
-        if board and board not in response['boards']:
-            response['boards'].append(board)
+    if dataFromDb:
         
-        if course and course not in response['competitive']:
-            response['competitive'].append(course)
+        for data in dataFromDb:
+            data=data._asdict()
+            print(data)
+            subject,course = data.get('name'),data.get('course')
+
+            if subject and subject not in response['boards'] and not course:
+                response['boards'].append(subject)
+            
+            elif course:
+
+                if response['competitive'].get(course):
+
+                    if not response['competitive'][course].get(subject):
+                        response['competitive'][course].append(subject)
+
+                else:
+
+                    response['competitive'][course] = []
+                    response['competitive'][course].append(subject)
 
     print(f"response:{response}")
 
@@ -48,8 +59,11 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
 
 
 def getQueryForBoardSubjectsAndCompSubjects(classId,board):
-    query = (f'''select s.name,s.class,s.board,c.exam_name from subject s join competitive_exams c on s.class=c.class where s.class={classId} and s.board='{board}';''')
+    query=(f'''select * from (select * from subject where class={classId}) as foo where board='{board}' or course is not null;''')
+    # query = (f'''select s.name,s.class,s.board,c.exam_name from subject s join competitive_exams c on s.class=c.class where s.class={classId} and s.board='{board}';''')
     return query
+    
+
 
 # def getQueryForSubjectsAvailableByBoard(classId,board,db):
 #     query=(f'''select name from subject where class={classId} and board='{board}'; ''')
