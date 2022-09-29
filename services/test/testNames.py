@@ -23,7 +23,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
     for data in dataFromDb:
         data=data._asdict()
         # if data.get('class')==classId:
-        board,course = data.get('board'),data.get('course')
+        board,course = data.get('name'),data.get('exam_name')
         if board and board not in response['boards']:
             response['boards'].append(board)
         
