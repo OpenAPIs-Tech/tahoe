@@ -168,8 +168,8 @@ def TestLists():
     if data:
         response['statusCode'],response['msgText'],response['data']=statusCode,"Success",data
         return Response(json.dumps(response),status=200,mimetype="application/json")
-    response['statusCode'],response['msgText'],response['data']=400,"Failed",data
-    return Response(json.dumps(response),status=400,mimetype="application/json")
+    response['statusCode'],response['msgText'],response['data']=200,"Failed",data
+    return Response(json.dumps(response),status=200,mimetype="application/json")
 
     
 
