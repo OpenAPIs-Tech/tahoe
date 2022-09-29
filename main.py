@@ -127,7 +127,7 @@ def TestNames():
 
     except Exception as e:
         print(f"error:{e}")
-        statusCode=400
+        statusCode=205
         msgText="bad request, failed to get body from request"
         response['statusCode']=statusCode
         response['msgText']=msgText
@@ -138,8 +138,8 @@ def TestNames():
     if data:
         response['statusCode'],response['msgText'],response['data']=statusCode,"Success",data
         return Response(json.dumps(response),status=200,mimetype="application/json")
-    response['statusCode'],response['msgText'],response['data']=400,"Failed",data
-    return Response(json.dumps(response),status=400,mimetype="application/json")
+    response['statusCode'],response['msgText'],response['data']=200,"Failed",data
+    return Response(json.dumps(response),status=200,mimetype="application/json")
 
 @app.route('/getTestListing',methods=['POST'])
 @cross_origin()
