@@ -5,7 +5,7 @@ def getTestNames(classId,board,db):
     if classId and board:
 
         data = getAllSubjectNamesAndCompetitionNames(classId,board,db)
-        data = None if not data.get('boards') or not data.get('competitive') else data
+        data = None if not data.get('boards') and not data.get('competitive') else data
         return data
     
     return
