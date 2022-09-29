@@ -27,7 +27,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
         if board and board not in response['boards']:
             response['boards'].append(board)
         
-        elif course and course not in response['competitive']:
+        if course and course not in response['competitive']:
             response['competitive'].append(course)
 
     print(f"response:{response}")
