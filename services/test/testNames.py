@@ -22,12 +22,13 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
 
     for data in dataFromDb:
         data=data._asdict()
-        if data.get('class')==classId:
-            if data.get('board'):
-                response['boards'].append(data.get('name'))
-            
-            elif data.get('course') and data.get('course') not in response['competitive']:
-                response['competitive'].append(data.get('course'))
+        # if data.get('class')==classId:
+        board,course = data.get('board'),data.get('course')
+        if board and board not in response['boards']:
+            response['boards'].append(board)
+        
+        elif course and course not in response['competitive']:
+            response['competitive'].append(course)
 
     print(f"response:{response}")
 
@@ -47,7 +48,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
 
 
 def getQueryForBoardSubjectsAndCompSubjects(classId,board):
-    query = (f'''select class,name,board,course from subject where class={classId} and board='{board}';''')
+    query = (f'''select s.name,s.class,s.board,c.exam_name from subject s join competitive_exams c on s.class=c.class where s.class={classId} and s.board='{board}';''')
     return query
 
 # def getQueryForSubjectsAvailableByBoard(classId,board,db):
