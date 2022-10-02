@@ -33,7 +33,7 @@ def getAllSubjectNamesAndCompetitionNames(classId,board,db):
 
                 if response['competitive'].get(course):
 
-                    if not response['competitive'][course].get(subject):
+                    if subject not in response['competitive'][course]:
                         response['competitive'][course].append(subject)
 
                 else:
