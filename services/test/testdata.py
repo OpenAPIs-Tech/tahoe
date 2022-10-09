@@ -1,14 +1,15 @@
 
 import json
+from typing import final
 import sqlalchemy
 
 
 def getTestData(testCode,db):
     if testCode:
-        query = getQuery(testCode,db)
-        if query:
+        query,finalres = getQuery(testCode,db)
+        if query and finalres:
             dataFromDB = getDataFromDb(query,db)
-            response = getResponseForTest(dataFromDB)
+            response = getResponseForTest(dataFromDB,finalres)
             
         if response:
             return response
@@ -26,21 +27,34 @@ def getOptionsData(data):
     return resp
 
 
-def getResponseForTest(dataFromDB):
-    response=[]
+def getResponseForTest(dataFromDB,finalres):
+    finalresponse={}
+    response={}
     
     for data in dataFromDB:
         temp={}
         data=data._asdict()
+        temp['questionId'] = data.get('id',None)
         temp['questionLatex'] = data.get('question_latex',None)
         temp['SolutionLatex'] = data.get('solution_latex',None)
         temp['optionLatex'] = getOptionsData(data.get('option_latex')) 
         temp['answer'] = [d for d in data.get('answer').split(",")]
         temp['duration'] = data.get('duration',None)
         temp['typeOfQuestion'] = data.get('type_of_question',None)
-        response.append(temp)
+        # response.append(temp)
+        response[data.get('id')] = temp
 
-    return response
+    for sectionName,questionIds in finalres.items():
+        # finalresponse={}
+        finalresponse[sectionName]=[]
+        for qId in questionIds:
+            finalresponse[sectionName].append(response.get(qId))
+
+        # finalresponse.append(tempDict)
+            
+
+
+    return finalresponse
 
     
 def getDataFromDb(query,db):
@@ -73,21 +87,37 @@ def getQuery(testCode,db):
         sections = getSectionData(data)
         
         try:
-            questionIds = getQuestionIdfromMarksInfoDict(sections,json.loads(data.get('sectionmarksinfo')))
+            questionIds,finalres = getQuestionIdfromMarksInfoDict(sections,json.loads(data.get('sectionmarksinfo')))
         except Exception as e:
             print(f'errrrrr=> {e}')
-        query=(f'''select q.question_latex,q.duration,q.type_of_question,q.difficulty,q.answer,q.option_latex,s.solution_latex from question q join solution s on q.id=s.question_id where q.id in {questionIds} ''')
+        query=(f'''select q.id,q.question_latex,q.duration,q.type_of_question,q.difficulty,q.answer,q.option_latex,s.solution_latex from question q join solution s on q.id=s.question_id where q.id in {questionIds} ''')
         print(f"query is==>{query}")
-        return query
+        return query,finalres
     return
+
+# def getQuestionIdfromMarksInfoDict(sections,sectionMarksInDict):
+#     questionIds = []
+#     for sec in sections:
+#         for key in sectionMarksInDict.get(sec).keys():
+#             questionIds.append(int(key))
+#     print(f"question ids===>{tuple(questionIds)}")
+#     return tuple(questionIds)
 
 def getQuestionIdfromMarksInfoDict(sections,sectionMarksInDict):
     questionIds = []
+    finalres={}
     for sec in sections:
+        questionIdsTemp = []
         for key in sectionMarksInDict.get(sec).keys():
-            questionIds.append(int(key))
-    print(f"question ids===>{tuple(questionIds)}")
-    return tuple(questionIds)
+            
+            questionIdsTemp.append(int(key))
+        finalres[sec] = questionIdsTemp
+        questionIds = questionIds+questionIdsTemp
+    # print(f"question ids===>{tuple(questionIds)}")
+    return tuple(questionIds),finalres
+    # return finalres
+
+
 def getSectionData(data):
     if data.get('sectioninfo'):
         return [s for s in data.get('sectioninfo').split(",")]
