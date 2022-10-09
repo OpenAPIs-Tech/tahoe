@@ -44,11 +44,13 @@ def getResponseForTest(dataFromDB,finalres):
         # response.append(temp)
         response[data.get('id')] = temp
 
-    for sectionName,questionIds in finalres.items():
+    for sectionName,questionMetaData in finalres.items():
         # finalresponse={}
         finalresponse[sectionName]=[]
-        for qId in questionIds:
-            finalresponse[sectionName].append(response.get(qId))
+        for qId,qMarks in questionMetaData.items():
+            questionDictData= response.get(qId)
+            questionDictData['questionMarks'] = qMarks
+            finalresponse[sectionName].append(questionDictData)
 
         # finalresponse.append(tempDict)
             
@@ -105,16 +107,18 @@ def getQuery(testCode,db):
 
 def getQuestionIdfromMarksInfoDict(sections,sectionMarksInDict):
     questionIds = []
-    finalres={}
+    tempres={}
     for sec in sections:
         questionIdsTemp = []
-        for key in sectionMarksInDict.get(sec).keys():
+        questionIdsMarksTemp = {}
+        for key,val in sectionMarksInDict.get(sec).items():
             
             questionIdsTemp.append(int(key))
-        finalres[sec] = questionIdsTemp
+            questionIdsMarksTemp[int(key)] = int(val)
+        tempres[sec] = questionIdsMarksTemp
         questionIds = questionIds+questionIdsTemp
     # print(f"question ids===>{tuple(questionIds)}")
-    return tuple(questionIds),finalres
+    return tuple(questionIds),tempres
     # return finalres
 
 
