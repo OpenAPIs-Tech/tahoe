@@ -30,6 +30,7 @@ def getOptionsData(data):
 def getResponseForTest(dataFromDB,finalres):
     finalresponse={}
     response={}
+    finalresponse['answers'] = {}
     
     for data in dataFromDB:
         temp={}
@@ -42,6 +43,7 @@ def getResponseForTest(dataFromDB,finalres):
         temp['duration'] = data.get('duration',None)
         temp['typeOfQuestion'] = data.get('type_of_question',None)
         # response.append(temp)
+        finalresponse['answers'][data.get('id')] = [d for d in data.get('answer').split(",")]
         response[data.get('id')] = temp
 
     for sectionName,questionMetaData in finalres.items():
