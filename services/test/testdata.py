@@ -31,6 +31,7 @@ def getResponseForTest(dataFromDB,finalres):
     finalresponse={}
     response={}
     finalresponse['answers'] = {}
+    finalresponse['question']={}
     
     for data in dataFromDB:
         temp={}
@@ -48,11 +49,11 @@ def getResponseForTest(dataFromDB,finalres):
 
     for sectionName,questionMetaData in finalres.items():
         # finalresponse={}
-        finalresponse[sectionName]=[]
+        finalresponse['question'][sectionName]=[]
         for qId,qMarks in questionMetaData.items():
             questionDictData= response.get(qId)
             questionDictData['questionMarks'] = qMarks
-            finalresponse[sectionName].append(questionDictData)
+            finalresponse['question'][sectionName].append(questionDictData)
 
         # finalresponse.append(tempDict)
             
