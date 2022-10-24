@@ -39,7 +39,7 @@ def getResponseForTest(dataFromDB,finalres):
         temp['questionLatex'] = data.get('question_latex',None)
         temp['SolutionLatex'] = data.get('solution_latex',None)
         temp['optionLatex'] = getOptionsData(data.get('option_latex')) 
-        temp['answer'] = [d for d in data.get('answer').split(",")]
+        # temp['answer'] = [d for d in data.get('answer').split(",")]
         temp['duration'] = data.get('duration',None)
         temp['typeOfQuestion'] = data.get('type_of_question',None)
         # response.append(temp)
